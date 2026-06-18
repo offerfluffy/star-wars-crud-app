@@ -36,7 +36,7 @@ function dodajPostac(event) {
 
 function pobierzZApi(event) {
   event.preventDefault();
-  fetch("https://swapi.dev/api/people/")
+  fetch("https://swapi.py4e.com/api/people/")
     .then((res) => res.json())
     .then((data) => {
       const characters = data.results.map((c) => ({
