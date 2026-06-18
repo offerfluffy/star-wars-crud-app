@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projekt</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <script defer src="./js/script.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Postaci StarWars</h1>
+      <h2>Dodaj własną postać:</h2>
+      <form id="formularz">
+        <input type="text" id="name" placeholder="Imię" />
+        <input type="text" id="height" placeholder="Wzrost" />
+        <input type="text" id="gender" placeholder="Płeć" />
+        <button type="submit"><i class="fas fa-plus"></i></button>
+      </form>
+      <button id="api-btn"><i class="fas fa-plus"></i> Pobierz z API</button>
+      <div id="dane"></div>
+    </div>
+  </body>
+</html>
