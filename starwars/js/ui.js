@@ -1,4 +1,8 @@
-import { analizujFrakcjeIAwatar, getFactionLabel } from "./factions.js";
+import {
+  analizujFrakcjeIAwatar,
+  getFactionLabel,
+  FACTION_OPTIONS,
+} from "./factions.js";
 import {
   getCharacters,
   createCharacter,
@@ -35,7 +39,7 @@ export function wyswietlDane() {
         const { faction, avatarHTML } = analizujFrakcjeIAwatar(
           item.name,
           item.gender,
-          item.image_url
+          item.image_url,
         );
         const factionLabel = getFactionLabel(faction);
 
@@ -160,7 +164,7 @@ export function otworzModal(character) {
     const { faction } = analizujFrakcjeIAwatar(
       character.name,
       character.gender,
-      currentImg
+      currentImg,
     );
     document.getElementById("edit-faction").value = faction;
   } else {
@@ -168,7 +172,7 @@ export function otworzModal(character) {
     const { faction } = analizujFrakcjeIAwatar(
       character.name,
       character.gender,
-      currentImg
+      currentImg,
     );
     document.getElementById("edit-faction").value = faction;
     document.getElementById("edit-image-url").value = "";
@@ -241,4 +245,23 @@ export function usun(id) {
         });
     }, 400);
   }
+}
+
+// Inicjalizuje listy rozwijane frakcji na podstawie enuma
+export function initFactionDropdowns() {
+  const factionSelects = [
+    document.getElementById("faction"),
+    document.getElementById("edit-faction"),
+  ];
+
+  factionSelects.forEach((select) => {
+    if (!select) return;
+    select.innerHTML = "";
+    Object.entries(FACTION_OPTIONS).forEach(([value, label]) => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = label;
+      select.appendChild(option);
+    });
+  });
 }

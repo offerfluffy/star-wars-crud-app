@@ -41,34 +41,45 @@
             <form id="formularz">
               <div class="form-group">
                 <label for="name">Imię postaci</label>
-                <input type="text" id="name" placeholder="np. Obi-Wan Kenobi" required />
+                <input
+                  type="text"
+                  id="name"
+                  placeholder="np. Obi-Wan Kenobi"
+                  required
+                />
               </div>
-              
+
               <div class="form-group">
                 <label for="height">Wzrost (cm)</label>
                 <input type="text" id="height" placeholder="np. 182" required />
               </div>
-              
+
               <div class="form-group">
                 <label for="gender">Płeć</label>
-                <input type="text" id="gender" placeholder="np. male / female / n/a" required />
+                <input
+                  type="text"
+                  id="gender"
+                  placeholder="np. male / female / n/a"
+                  required
+                />
               </div>
-              
+
               <div class="form-group">
-                <label for="faction">Frakcja / Awatar</label>
+                <label for="faction">Frakcja</label>
                 <select id="faction">
-                  <option value="jedi">Zakon Jedi (Niebieski miecz)</option>
-                  <option value="sith">Imperium Sithów (Czerwony miecz)</option>
-                  <option value="rebel">Sojusz Rebeliantów (Pomarańczowy miecz)</option>
-                  <option value="empire">Imperium Galaktyczne (Szary / Biały miecz)</option>
-                  <option value="droid">Droidy (Złota poświata)</option>
-                  <option value="bounty_hunter">Łowcy Nagród (Zielona poświata)</option>
+                  <!-- Opcje generowane dynamicznie na podstawie FACTIONS enum -->
                 </select>
               </div>
 
               <div class="form-group">
-                <label for="image_url">Własny adres URL obrazka (opcjonalnie)</label>
-                <input type="url" id="image_url" placeholder="https://adres-obrazka.jpg/png" />
+                <label for="image_url"
+                  >Własny adres URL obrazka (opcjonalnie)</label
+                >
+                <input
+                  type="url"
+                  id="image_url"
+                  placeholder="https://adres-obrazka.jpg/png"
+                />
               </div>
 
               <button type="submit" class="btn btn-add">
@@ -102,18 +113,23 @@
       </main>
 
       <footer>
-        <p>&copy; 2026 Holonet Registry System. Powered by Antigravity & PHP/PostgreSQL.</p>
+        <p>
+          &copy; 2026 Holonet Registry System. Powered by Antigravity &
+          PHP/PostgreSQL.
+        </p>
       </footer>
     </div>
 
     <!-- Modal Edycji Postaci -->
     <div id="edit-modal" class="modal-overlay hidden">
       <div class="modal-content glass-card">
-        <button type="button" id="close-modal-x" class="close-btn">&times;</button>
+        <button type="button" id="close-modal-x" class="close-btn">
+          &times;
+        </button>
         <h2><i class="fas fa-edit"></i> Edytuj wpis Holonetu</h2>
         <form id="edit-form">
           <input type="hidden" id="edit-id" />
-          
+
           <div class="form-group">
             <label for="edit-name">Imię postaci</label>
             <input type="text" id="edit-name" required />
@@ -130,24 +146,25 @@
           </div>
 
           <div class="form-group">
-            <label for="edit-faction">Frakcja / Awatar</label>
+            <label for="edit-faction">Frakcja</label>
             <select id="edit-faction">
-              <option value="jedi">Zakon Jedi (Niebieski miecz)</option>
-              <option value="sith">Imperium Sithów (Czerwony miecz)</option>
-              <option value="rebel">Sojusz Rebeliantów (Pomarańczowy miecz)</option>
-              <option value="empire">Imperium Galaktyczne (Szary / Biały miecz)</option>
-              <option value="droid">Droidy (Złota poświata)</option>
-              <option value="bounty_hunter">Łowcy Nagród (Zielona poświata)</option>
+              <!-- Opcje generowane dynamicznie na podstawie FACTIONS enum -->
             </select>
           </div>
 
           <div class="form-group">
-            <label for="edit-image-url">Własny adres URL obrazka (opcjonalnie)</label>
+            <label for="edit-image-url"
+              >Własny adres URL obrazka (opcjonalnie)</label
+            >
             <input type="url" id="edit-image-url" />
           </div>
 
           <div class="modal-actions">
-            <button type="button" id="close-modal-btn" class="btn btn-secondary">
+            <button
+              type="button"
+              id="close-modal-btn"
+              class="btn btn-secondary"
+            >
               Anuluj
             </button>
             <button type="submit" class="btn btn-primary">

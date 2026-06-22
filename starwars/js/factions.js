@@ -9,6 +9,15 @@ export const FACTIONS = Object.freeze({
 
 export const factions = Object.values(FACTIONS);
 
+export const FACTION_OPTIONS = Object.freeze({
+  [FACTIONS.JEDI]: "Zakon Jedi",
+  [FACTIONS.SITH]: "Imperium Sithów",
+  [FACTIONS.REBEL]: "Sojusz Rebeliantów",
+  [FACTIONS.EMPIRE]: "Imperium Galaktyczne",
+  [FACTIONS.DROID]: "Droidy",
+  [FACTIONS.BOUNTY_HUNTER]: "Łowcy Nagród",
+});
+
 const svgCache = {};
 
 // Prefetch SVGs dynamically from assets folder and inject classes if needed

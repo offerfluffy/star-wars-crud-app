@@ -5,15 +5,19 @@ import {
   pobierzZApi,
   zamknijModal,
   zapiszEdycje,
+  initFactionDropdowns,
 } from "./ui.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
+  // Populate faction dropdowns dynamically matching the factions enum
+  initFactionDropdowns();
+
   // Prefetch SVGs
   await prefetchSVGs();
-  
+
   // Render character data
   wyswietlDane();
-  
+
   // Bind main page actions
   document.getElementById("formularz").addEventListener("submit", dodajPostac);
   document.getElementById("api-btn").addEventListener("click", pobierzZApi);

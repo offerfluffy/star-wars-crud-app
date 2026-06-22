@@ -57,7 +57,7 @@ export async function fetchFromSWAPI() {
     throw new Error("Nie udało się pobrać danych ze SWAPI.");
   }
   const data = await response.json();
-  
+
   return data.results.map((c) => {
     // Auto-przypisanie frakcji do image_url dla pobranych postaci
     const detectedFaction = wykryjFrakcjePoNazwie(c.name) || "empire";
