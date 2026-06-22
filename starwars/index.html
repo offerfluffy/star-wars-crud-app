@@ -3,26 +3,159 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Projekt</title>
-    <link rel="stylesheet" href="./style.css" />
+    <title>Archiwum Star Wars CRUD</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome Icons -->
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <link rel="stylesheet" href="./style.css" />
     <script defer src="./js/script.js"></script>
   </head>
   <body>
-    <div class="container">
-      <h1>Postaci StarWars</h1>
-      <h2>Dodaj własną postać:</h2>
-      <form id="formularz">
-        <input type="text" id="name" placeholder="Imię" />
-        <input type="text" id="height" placeholder="Wzrost" />
-        <input type="text" id="gender" placeholder="Płeć" />
-        <button type="submit"><i class="fas fa-plus"></i></button>
-      </form>
-      <button id="api-btn"><i class="fas fa-plus"></i> Pobierz z API</button>
-      <div id="dane"></div>
+    <!-- Kosmiczne tło z cząsteczkami -->
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+
+    <div class="app-container">
+      <header>
+        <div class="header-logo">
+          <i class="fas fa-jedi glow-icon"></i>
+          <h1>Archiwum Holonet</h1>
+        </div>
+        <p class="subtitle">Zarządzanie rejestrem postaci w galaktyce</p>
+      </header>
+
+      <main class="main-content">
+        <!-- Panel Kontrolny (Formularz dodawania i akcje) -->
+        <section class="control-panel">
+          <div class="glass-card">
+            <h2><i class="fas fa-user-plus"></i> Dodaj nową postać</h2>
+            <form id="formularz">
+              <div class="form-group">
+                <label for="name">Imię postaci</label>
+                <input type="text" id="name" placeholder="np. Obi-Wan Kenobi" required />
+              </div>
+              
+              <div class="form-group">
+                <label for="height">Wzrost (cm)</label>
+                <input type="text" id="height" placeholder="np. 182" required />
+              </div>
+              
+              <div class="form-group">
+                <label for="gender">Płeć</label>
+                <input type="text" id="gender" placeholder="np. male / female / n/a" required />
+              </div>
+              
+              <div class="form-group">
+                <label for="faction">Frakcja / Awatar</label>
+                <select id="faction">
+                  <option value="jedi">Zakon Jedi (Niebieski miecz)</option>
+                  <option value="sith">Imperium Sithów (Czerwony miecz)</option>
+                  <option value="rebel">Sojusz Rebeliantów (Pomarańczowy miecz)</option>
+                  <option value="empire">Imperium Galaktyczne (Szary / Biały miecz)</option>
+                  <option value="droid">Droidy (Złota poświata)</option>
+                  <option value="bounty_hunter">Łowcy Nagród (Zielona poświata)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="image_url">Własny adres URL obrazka (opcjonalnie)</label>
+                <input type="url" id="image_url" placeholder="https://adres-obrazka.jpg/png" />
+              </div>
+
+              <button type="submit" class="btn btn-add">
+                <i class="fas fa-plus"></i> Dodaj do rejestru
+              </button>
+            </form>
+          </div>
+
+          <div class="glass-card sync-card">
+            <h2><i class="fas fa-sync-alt"></i> Synchronizacja danych</h2>
+            <p>Pobierz bazowe postacie z zewnętrznego archiwum SWAPI.</p>
+            <button id="api-btn" class="btn btn-api">
+              <i class="fas fa-download"></i> Pobierz z API SWAPI
+            </button>
+          </div>
+        </section>
+
+        <!-- Sekcja z listą postaci -->
+        <section class="records-panel">
+          <div class="panel-header">
+            <h2><i class="fas fa-address-book"></i> Rejestr postaci</h2>
+            <div id="status-message" class="status-msg"></div>
+          </div>
+          <div id="dane" class="characters-grid">
+            <!-- Tutaj będą generowane dynamicznie karty postaci -->
+            <div class="loading-placeholder">
+              <i class="fas fa-spinner fa-spin"></i> Ładowanie bazy danych...
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <p>&copy; 2026 Holonet Registry System. Powered by Antigravity & PHP/PostgreSQL.</p>
+      </footer>
+    </div>
+
+    <!-- Modal Edycji Postaci -->
+    <div id="edit-modal" class="modal-overlay hidden">
+      <div class="modal-content glass-card">
+        <button type="button" id="close-modal-x" class="close-btn">&times;</button>
+        <h2><i class="fas fa-edit"></i> Edytuj wpis Holonetu</h2>
+        <form id="edit-form">
+          <input type="hidden" id="edit-id" />
+          
+          <div class="form-group">
+            <label for="edit-name">Imię postaci</label>
+            <input type="text" id="edit-name" required />
+          </div>
+
+          <div class="form-group">
+            <label for="edit-height">Wzrost (cm)</label>
+            <input type="text" id="edit-height" required />
+          </div>
+
+          <div class="form-group">
+            <label for="edit-gender">Płeć</label>
+            <input type="text" id="edit-gender" required />
+          </div>
+
+          <div class="form-group">
+            <label for="edit-faction">Frakcja / Awatar</label>
+            <select id="edit-faction">
+              <option value="jedi">Zakon Jedi (Niebieski miecz)</option>
+              <option value="sith">Imperium Sithów (Czerwony miecz)</option>
+              <option value="rebel">Sojusz Rebeliantów (Pomarańczowy miecz)</option>
+              <option value="empire">Imperium Galaktyczne (Szary / Biały miecz)</option>
+              <option value="droid">Droidy (Złota poświata)</option>
+              <option value="bounty_hunter">Łowcy Nagród (Zielona poświata)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-image-url">Własny adres URL obrazka (opcjonalnie)</label>
+            <input type="url" id="edit-image-url" />
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" id="close-modal-btn" class="btn btn-secondary">
+              Anuluj
+            </button>
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i> Zapisz zmiany
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </body>
 </html>

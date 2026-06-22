@@ -11,12 +11,13 @@ $id = (int) $_POST['id'];
 $name = $_POST['name'];
 $height = $_POST['height'];
 $gender = $_POST['gender'];
+$image_url = isset($_POST['image_url']) ? $_POST['image_url'] : '';
 
 try {
     $stmt = $pdo->prepare(
-        "UPDATE characters SET name = ?, height = ?, gender = ? WHERE id = ?"
+        "UPDATE characters SET name = ?, height = ?, gender = ?, image_url = ? WHERE id = ?"
     );
-    $stmt->execute([$name, $height, $gender, $id]);
+    $stmt->execute([$name, $height, $gender, $image_url, $id]);
     
     header('Content-Type: application/json');
     echo json_encode(['status' => 'success']);

@@ -1,67 +1,672 @@
 :root {
-  --bg-color: #ecf0f1;
-  --text-color: #2c3e50;
-  --card-color: #bdc3c7;
-  --add-btn: #2ecc71;
-  --hov-btn: #27ae60;
+  /* Kolory bazowe */
+  --bg-dark: #0a0c10;
+  --bg-card: rgba(20, 26, 38, 0.65);
+  --bg-card-hover: rgba(28, 36, 51, 0.85);
+  --border-color: rgba(255, 255, 255, 0.08);
+  --text-main: #f5f6fa;
+  --text-muted: #a4b0be;
+  
+  /* Kolory Frakcji / Poświat */
+  --color-jedi: #00d2ff;
+  --shadow-jedi: rgba(0, 210, 255, 0.45);
+  
+  --color-sith: #ff3838;
+  --shadow-sith: rgba(255, 56, 56, 0.45);
+  
+  --color-rebel: #ff9f43;
+  --shadow-rebel: rgba(255, 159, 67, 0.45);
+  
+  --color-empire: #dcdde1;
+  --shadow-empire: rgba(220, 221, 225, 0.35);
+  
+  --color-droid: #fecb2f;
+  --shadow-droid: rgba(254, 203, 47, 0.45);
+  
+  --color-bounty-hunter: #4cd137;
+  --shadow-bounty-hunter: rgba(76, 209, 55, 0.45);
+
+  --font-title: 'Orbitron', sans-serif;
+  --font-body: 'Inter', sans-serif;
 }
-body {
-  font-family: Arial, sans-serif;
-  background-color: var(--text-color);
+
+/* Reset i podstawowe style */
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  color: var(--text-color);
 }
-.container {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: var(--bg-color);
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
 }
-h1,
-h2 {
+
+/* Animowane tło kosmiczne */
+.stars, .twinkling {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: -10;
+  pointer-events: none;
+}
+
+.stars {
+  background: #000 url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/123163/stars.png') repeat top center;
+}
+
+.twinkling {
+  background: transparent url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/123163/twinkling.png') repeat top center;
+  animation: move-twink-back 200s linear infinite;
+}
+
+@keyframes move-twink-back {
+  from { background-position: 0 0; }
+  to { background-position: -10000px 5000px; }
+}
+
+/* Układ główny aplikacji */
+.app-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Nagłówek */
+header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.header-logo h1 {
+  font-family: var(--font-title);
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #FFE81F; /* Klasyczny żółty Star Wars */
+  text-shadow: 0 0 10px rgba(255, 232, 31, 0.4);
+}
+
+.glow-icon {
+  font-size: 2.2rem;
+  color: #FFE81F;
+  text-shadow: 0 0 15px rgba(255, 232, 31, 0.8);
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-top: 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Layout główny */
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  flex: 1;
+}
+
+/* Responsywność dla desktop */
+@media (min-width: 992px) {
+  .main-content {
+    grid-template-columns: 380px 1fr;
+  }
+}
+
+/* Szklane karty (Glassmorphism) */
+.glass-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 25px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.glass-card h2 {
+  font-family: var(--font-title);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--text-main);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Panel Kontrolny */
+.control-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.sync-card {
   text-align: center;
 }
 
-#dane {
-  margin-top: 20px;
+.sync-card p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+  line-height: 1.4;
 }
-#dane div {
-  margin-top: 20px;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: var(--card-color);
-}
-form {
-  width: 100%;
-  margin-top: 20px;
+
+/* Style formularzy */
+.form-group {
+  margin-bottom: 18px;
   display: flex;
   flex-direction: column;
-  align-items: left;
+  gap: 6px;
 }
-input {
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid var(--bg-color);
-  border-radius: 4px;
+
+.form-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
 }
-button {
-  padding: 10px;
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px;
+  background: rgba(10, 12, 16, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.form-group input::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #FFE81F;
+  box-shadow: 0 0 10px rgba(255, 232, 31, 0.25);
+}
+
+/* Przyciski */
+.btn {
+  width: 100%;
+  padding: 12px;
   border: none;
-  background-color: var(--add-btn);
-  color: var(--bg-color);
-  border-radius: 4px;
+  border-radius: 8px;
+  font-family: var(--font-title);
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   cursor: pointer;
-  animation: all 0.2s ease-in;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-button:hover {
-  background-color: var(--hov-btn);
+
+.btn-add {
+  background: #2ecc71;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);
+}
+
+.btn-add:hover {
+  background: #27ae60;
+  box-shadow: 0 0 15px rgba(46, 204, 113, 0.6);
+  transform: translateY(-2px);
+}
+
+.btn-api {
+  background: transparent;
+  color: #FFE81F;
+  border: 1px solid #FFE81F;
+  box-shadow: 0 4px 15px rgba(255, 232, 31, 0.1);
+}
+
+.btn-api:hover {
+  background: #FFE81F;
+  color: #000;
+  box-shadow: 0 0 15px rgba(255, 232, 31, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Panel Rejestru */
+.records-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 15px;
+}
+
+.panel-header h2 {
+  font-family: var(--font-title);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-msg {
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted);
+  display: none;
+}
+
+/* Siatka kart postaci */
+.characters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.loading-placeholder {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 50px;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+
+.loading-placeholder i {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  display: block;
+}
+
+/* Pojedyncza Karta Postaci (Glassmorphism + Glow) */
+.character-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 20px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   position: relative;
-  top: 1px;
+  overflow: hidden;
+  transition:
+    transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    border-color 0.4s,
+    box-shadow 0.4s,
+    opacity 0.4s,
+    display 0.4s;
+  transition-behavior: allow-discrete;
+  
+  /* Zmienne domyślne dla poświaty - zaktualizowane dynamicznie przez JS */
+  --glow-color: var(--color-empire);
+  --glow-shadow: var(--shadow-empire);
 }
-#api-btn {
-  margin-top: 10px;
+
+/* Animacja wejścia karty do DOM przy użyciu @starting-style */
+@starting-style {
+  .character-card {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+}
+
+.character-card.hidden {
+  display: none;
+  opacity: 0;
+  transform: translateY(-20px) scale(0.9);
+}
+
+.character-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--glow-color);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 15px var(--glow-shadow);
+}
+
+/* Dedykowane klasy poświaty na bazie frakcji */
+.character-card.glow-jedi {
+  --glow-color: var(--color-jedi);
+  --glow-shadow: var(--shadow-jedi);
+}
+.character-card.glow-sith {
+  --glow-color: var(--color-sith);
+  --glow-shadow: var(--shadow-sith);
+}
+.character-card.glow-rebel {
+  --glow-color: var(--color-rebel);
+  --glow-shadow: var(--shadow-rebel);
+}
+.character-card.glow-empire {
+  --glow-color: var(--color-empire);
+  --glow-shadow: var(--shadow-empire);
+}
+.character-card.glow-droid {
+  --glow-color: var(--color-droid);
+  --glow-shadow: var(--shadow-droid);
+}
+.character-card.glow-bounty-hunter {
+  --glow-color: var(--color-bounty-hunter);
+  --glow-shadow: var(--shadow-bounty-hunter);
+}
+
+/* Dekoracyjna linia u góry karty nawiązująca do miecza świetlnego */
+.character-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--glow-color);
+  box-shadow: 0 0 10px var(--glow-color);
+}
+
+/* Zawartość Karty */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 18px;
+}
+
+.avatar-container {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid var(--glow-color);
+  box-shadow: 0 0 8px var(--glow-shadow);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 12, 16, 0.9);
+  flex-shrink: 0;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-svg {
+  width: 32px;
+  height: 32px;
+  fill: var(--glow-color);
+  filter: drop-shadow(0 0 3px var(--glow-shadow));
+}
+
+.card-title-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.character-card h3 {
+  font-family: var(--font-title);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
+.character-faction {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--glow-color);
+  margin-top: 4px;
+  letter-spacing: 0.5px;
+}
+
+/* Dane postaci */
+.card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.detail-label {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.detail-value {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+/* Przyciski Akcji Karty */
+.card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.btn-card {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+.btn-edit {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-edit:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #FFE81F;
+  color: #FFE81F;
+}
+
+.btn-delete {
+  background: rgba(255, 56, 56, 0.1);
+  color: #ff3838;
+  border: 1px solid rgba(255, 56, 56, 0.2);
+}
+
+.btn-delete:hover {
+  background: #ff3838;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(255, 56, 56, 0.4);
+}
+
+/* Stopka */
+footer {
+  text-align: center;
+  margin-top: 50px;
+  padding: 20px 0;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+/* Modal Overlay i Zawartość */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: opacity 0.3s ease, display 0.3s ease;
+  transition-behavior: allow-discrete;
+}
+
+.modal-overlay.hidden {
+  display: none !important;
+  opacity: 0;
+}
+
+.modal-content {
+  width: 90%;
+  max-width: 500px;
+  animation: modal-slide-in 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+}
+
+@keyframes modal-slide-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.8rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #ff3838;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.modal-actions .btn {
+  flex: 1;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.btn-primary {
+  background: #FFE81F;
+  color: #000;
+  box-shadow: 0 4px 15px rgba(255, 232, 31, 0.2);
+}
+
+.btn-primary:hover {
+  background: #fff;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+}
+
+/* Własne scrollbary (sci-fi HUD aesthetic) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FFE81F;
+  box-shadow: 0 0 10px rgba(255, 232, 31, 0.5);
+}
+
+/* Animacja dla reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  body, .twinkling, .character-card, .btn, .modal-overlay, .modal-content {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
 }

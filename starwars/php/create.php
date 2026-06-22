@@ -8,10 +8,11 @@ if (!isset($_POST['name'], $_POST['height'], $_POST['gender'])) {
 }
 
 try {
+    $image_url = isset($_POST['image_url']) ? $_POST['image_url'] : '';
     $stmt = $pdo->prepare(
-        "INSERT INTO characters (name, height, gender) VALUES (?, ?, ?)"
+        "INSERT INTO characters (name, height, gender, image_url) VALUES (?, ?, ?, ?)"
     );
-    $stmt->execute([$_POST['name'], $_POST['height'], $_POST['gender']]);
+    $stmt->execute([$_POST['name'], $_POST['height'], $_POST['gender'], $image_url]);
     
     header('Content-Type: application/json');
     echo json_encode(['status' => 'success']);
