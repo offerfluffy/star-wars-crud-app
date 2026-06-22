@@ -54,6 +54,33 @@ export function getFactionLabel(faction) {
   return labels[faction] || "Galaktyka";
 }
 
+const FACTION_KEYWORDS = {
+  jedi: ["luke", "obi-wan", "yoda", "anakin", "windu", "qui-gon", "rey", "ahsoka", "kenobi", "jedi"],
+  sith: ["vader", "palpatine", "sidious", "maul", "kylo", "ren", "dooku", "sith"],
+  droid: ["r2", "c-3", "c3", "bb-8", "droid", "k-2", "chopper", "bb8"],
+  bounty_hunter: ["boba", "jango", "fett", "mando", "hunter", "greedo"],
+  rebel: ["leia", "han", "chewbacca", "organa", "rebel", "ackbar", "lando", "solo"],
+};
+
+// Pomocnicza funkcja wykrywająca frakcję na podstawie słów kluczowych w imieniu
+export function wykryjFrakcjePoNazwie(name) {
+  if (!name) return null;
+  const lowerName = name.toLowerCase();
+
+  // Specjalny przypadek dla Skywalkerów (oprócz Vadera)
+  if (lowerName.includes("skywalker") && !lowerName.includes("vader")) {
+    return "jedi";
+  }
+
+  for (const [faction, keywords] of Object.entries(FACTION_KEYWORDS)) {
+    if (keywords.some((keyword) => lowerName.includes(keyword))) {
+      return faction;
+    }
+  }
+
+  return null;
+}
+
 // Określa frakcję oraz kod awatara dla postaci
 export function analizujFrakcjeIAwatar(name, gender, imageUrl) {
   let faction = "empire";
@@ -63,66 +90,12 @@ export function analizujFrakcjeIAwatar(name, gender, imageUrl) {
     faction = imageUrl.split(":")[1];
   } else {
     // 2. Automatyczne mapowanie frakcji po słowach kluczowych w imieniu
-    const lowerName = name.toLowerCase();
-    if (
-      lowerName.includes("luke") ||
-      lowerName.includes("obi-wan") ||
-      lowerName.includes("yoda") ||
-      lowerName.includes("anakin") ||
-      lowerName.includes("windu") ||
-      lowerName.includes("qui-gon") ||
-      lowerName.includes("rey") ||
-      lowerName.includes("ahsoka") ||
-      lowerName.includes("kenobi") ||
-      lowerName.includes("jedi") ||
-      (lowerName.includes("skywalker") && !lowerName.includes("vader"))
-    ) {
-      faction = "jedi";
-    } else if (
-      lowerName.includes("vader") ||
-      lowerName.includes("palpatine") ||
-      lowerName.includes("sidious") ||
-      lowerName.includes("maul") ||
-      lowerName.includes("kylo") ||
-      lowerName.includes("ren") ||
-      lowerName.includes("dooku") ||
-      lowerName.includes("sith")
-    ) {
-      faction = "sith";
-    } else if (
-      lowerName.includes("r2") ||
-      lowerName.includes("c-3") ||
-      lowerName.includes("c3") ||
-      lowerName.includes("bb-8") ||
-      lowerName.includes("droid") ||
-      lowerName.includes("k-2") ||
-      lowerName.includes("chopper") ||
-      lowerName.includes("bb8")
-    ) {
-      faction = "droid";
-    } else if (
-      lowerName.includes("boba") ||
-      lowerName.includes("jango") ||
-      lowerName.includes("fett") ||
-      lowerName.includes("mando") ||
-      lowerName.includes("hunter") ||
-      lowerName.includes("greedo")
-    ) {
-      faction = "bounty_hunter";
-    } else if (
-      lowerName.includes("leia") ||
-      lowerName.includes("han") ||
-      lowerName.includes("chewbacca") ||
-      lowerName.includes("organa") ||
-      lowerName.includes("rebel") ||
-      lowerName.includes("ackbar") ||
-      lowerName.includes("lando") ||
-      lowerName.includes("solo")
-    ) {
-      faction = "rebel";
+    const detected = wykryjFrakcjePoNazwie(name);
+    if (detected) {
+      faction = detected;
     } else {
       // Fallback na podstawie płci
-      const lowerGender = gender.toLowerCase();
+      const lowerGender = (gender || "").toLowerCase();
       if (lowerGender === "n/a" || lowerGender === "none") {
         faction = "droid";
       } else {

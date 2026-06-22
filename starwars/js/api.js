@@ -1,3 +1,5 @@
+import { wykryjFrakcjePoNazwie } from "./factions.js";
+
 // Fetches all characters from the database
 export async function getCharacters() {
   const response = await fetch("php/read.php");
@@ -58,55 +60,7 @@ export async function fetchFromSWAPI() {
   
   return data.results.map((c) => {
     // Auto-przypisanie frakcji do image_url dla pobranych postaci
-    let detectedFaction = "empire";
-    const lowerName = c.name.toLowerCase();
-
-    if (
-      lowerName.includes("luke") ||
-      lowerName.includes("obi-wan") ||
-      lowerName.includes("yoda") ||
-      lowerName.includes("anakin") ||
-      lowerName.includes("windu") ||
-      lowerName.includes("qui-gon") ||
-      lowerName.includes("rey") ||
-      lowerName.includes("ahsoka") ||
-      lowerName.includes("kenobi")
-    ) {
-      detectedFaction = "jedi";
-    } else if (
-      lowerName.includes("vader") ||
-      lowerName.includes("palpatine") ||
-      lowerName.includes("sidious") ||
-      lowerName.includes("maul") ||
-      lowerName.includes("kylo") ||
-      lowerName.includes("dooku")
-    ) {
-      detectedFaction = "sith";
-    } else if (
-      lowerName.includes("r2") ||
-      lowerName.includes("c-3") ||
-      lowerName.includes("c3") ||
-      lowerName.includes("bb-8") ||
-      lowerName.includes("droid")
-    ) {
-      detectedFaction = "droid";
-    } else if (
-      lowerName.includes("boba") ||
-      lowerName.includes("jango") ||
-      lowerName.includes("fett") ||
-      lowerName.includes("mando") ||
-      lowerName.includes("hunter")
-    ) {
-      detectedFaction = "bounty_hunter";
-    } else if (
-      lowerName.includes("leia") ||
-      lowerName.includes("han") ||
-      lowerName.includes("chewbacca") ||
-      lowerName.includes("rebel") ||
-      lowerName.includes("solo")
-    ) {
-      detectedFaction = "rebel";
-    }
+    const detectedFaction = wykryjFrakcjePoNazwie(c.name) || "empire";
 
     return {
       name: c.name,
