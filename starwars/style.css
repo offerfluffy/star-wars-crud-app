@@ -1,36 +1,33 @@
 :root {
-  /* Kolory bazowe */
   --bg-dark: #0a0c10;
   --bg-card: rgba(20, 26, 38, 0.65);
   --bg-card-hover: rgba(28, 36, 51, 0.85);
   --border-color: rgba(255, 255, 255, 0.08);
   --text-main: #f5f6fa;
   --text-muted: #a4b0be;
-  
-  /* Kolory Frakcji / Poświat */
+
   --color-jedi: #00d2ff;
   --shadow-jedi: rgba(0, 210, 255, 0.45);
-  
+
   --color-sith: #ff3838;
   --shadow-sith: rgba(255, 56, 56, 0.45);
-  
+
   --color-rebel: #ff9f43;
   --shadow-rebel: rgba(255, 159, 67, 0.45);
-  
+
   --color-empire: #dcdde1;
   --shadow-empire: rgba(220, 221, 225, 0.35);
-  
+
   --color-droid: #fecb2f;
   --shadow-droid: rgba(254, 203, 47, 0.45);
-  
+
   --color-bounty-hunter: #4cd137;
   --shadow-bounty-hunter: rgba(76, 209, 55, 0.45);
 
-  --font-title: 'Orbitron', sans-serif;
-  --font-body: 'Inter', sans-serif;
+  --font-title: "Orbitron", sans-serif;
+  --font-body: "Inter", sans-serif;
 }
 
-/* Reset i podstawowe style */
 * {
   margin: 0;
   padding: 0;
@@ -46,8 +43,8 @@ body {
   position: relative;
 }
 
-/* Animowane tło kosmiczne */
-.stars, .twinkling {
+.stars,
+.twinkling {
   position: absolute;
   top: 0;
   left: 0;
@@ -61,20 +58,27 @@ body {
 }
 
 .stars {
-  background: #000 url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/123163/stars.png') repeat top center;
+  background: #000
+    url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/123163/stars.png") repeat
+    top center;
 }
 
 .twinkling {
-  background: transparent url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/123163/twinkling.png') repeat top center;
+  background: transparent
+    url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/123163/twinkling.png")
+    repeat top center;
   animation: move-twink-back 200s linear infinite;
 }
 
 @keyframes move-twink-back {
-  from { background-position: 0 0; }
-  to { background-position: -10000px 5000px; }
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -10000px 5000px;
+  }
 }
 
-/* Układ główny aplikacji */
 .app-container {
   max-width: 1300px;
   margin: 0 auto;
@@ -84,7 +88,6 @@ body {
   flex-direction: column;
 }
 
-/* Nagłówek */
 header {
   text-align: center;
   margin-bottom: 40px;
@@ -105,20 +108,27 @@ header {
   font-weight: 900;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #FFE81F; /* Klasyczny żółty Star Wars */
+  color: #ffe81f;
   text-shadow: 0 0 10px rgba(255, 232, 31, 0.4);
 }
 
 .glow-icon {
   font-size: 2.2rem;
-  color: #FFE81F;
+  color: #ffe81f;
   text-shadow: 0 0 15px rgba(255, 232, 31, 0.8);
   animation: pulse 2s infinite ease-in-out;
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 0.8; }
-  50% { transform: scale(1.1); opacity: 1; }
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
 }
 
 .subtitle {
@@ -129,7 +139,6 @@ header {
   text-transform: uppercase;
 }
 
-/* Layout główny */
 .main-content {
   display: grid;
   grid-template-columns: 1fr;
@@ -137,14 +146,12 @@ header {
   flex: 1;
 }
 
-/* Responsywność dla desktop */
 @media (min-width: 992px) {
   .main-content {
     grid-template-columns: 380px 1fr;
   }
 }
 
-/* Szklane karty (Glassmorphism) */
 .glass-card {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -153,7 +160,9 @@ header {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s;
 }
 
 .glass-card h2 {
@@ -169,7 +178,6 @@ header {
   gap: 10px;
 }
 
-/* Panel Kontrolny */
 .control-panel {
   display: flex;
   flex-direction: column;
@@ -187,7 +195,6 @@ header {
   line-height: 1.4;
 }
 
-/* Style formularzy */
 .form-group {
   margin-bottom: 18px;
   display: flex;
@@ -223,11 +230,10 @@ header {
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #FFE81F;
+  border-color: #ffe81f;
   box-shadow: 0 0 10px rgba(255, 232, 31, 0.25);
 }
 
-/* Przyciski */
 .btn {
   width: 100%;
   padding: 12px;
@@ -260,19 +266,18 @@ header {
 
 .btn-api {
   background: transparent;
-  color: #FFE81F;
-  border: 1px solid #FFE81F;
+  color: #ffe81f;
+  border: 1px solid #ffe81f;
   box-shadow: 0 4px 15px rgba(255, 232, 31, 0.1);
 }
 
 .btn-api:hover {
-  background: #FFE81F;
+  background: #ffe81f;
   color: #000;
   box-shadow: 0 0 15px rgba(255, 232, 31, 0.5);
   transform: translateY(-2px);
 }
 
-/* Panel Rejestru */
 .records-panel {
   display: flex;
   flex-direction: column;
@@ -308,7 +313,6 @@ header {
   display: none;
 }
 
-/* Siatka kart postaci */
 .characters-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -329,7 +333,6 @@ header {
   display: block;
 }
 
-/* Pojedyncza Karta Postaci (Glassmorphism + Glow) */
 .character-card {
   display: flex;
   flex-direction: column;
@@ -348,13 +351,11 @@ header {
     opacity 0.4s,
     display 0.4s;
   transition-behavior: allow-discrete;
-  
-  /* Zmienne domyślne dla poświaty - zaktualizowane dynamicznie przez JS */
+
   --glow-color: var(--color-empire);
   --glow-shadow: var(--shadow-empire);
 }
 
-/* Animacja wejścia karty do DOM przy użyciu @starting-style */
 @starting-style {
   .character-card {
     opacity: 0;
@@ -371,10 +372,11 @@ header {
 .character-card:hover {
   transform: translateY(-5px);
   border-color: var(--glow-color);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 15px var(--glow-shadow);
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.5),
+    0 0 15px var(--glow-shadow);
 }
 
-/* Dedykowane klasy poświaty na bazie frakcji */
 .character-card.glow-jedi {
   --glow-color: var(--color-jedi);
   --glow-shadow: var(--shadow-jedi);
@@ -400,9 +402,8 @@ header {
   --glow-shadow: var(--shadow-bounty-hunter);
 }
 
-/* Dekoracyjna linia u góry karty nawiązująca do miecza świetlnego */
 .character-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -412,7 +413,6 @@ header {
   box-shadow: 0 0 10px var(--glow-color);
 }
 
-/* Zawartość Karty */
 .card-header {
   display: flex;
   align-items: center;
@@ -469,7 +469,6 @@ header {
   letter-spacing: 0.5px;
 }
 
-/* Dane postaci */
 .card-details {
   display: flex;
   flex-direction: column;
@@ -496,7 +495,6 @@ header {
   font-weight: 600;
 }
 
-/* Przyciski Akcji Karty */
 .card-actions {
   display: flex;
   gap: 10px;
@@ -528,8 +526,8 @@ header {
 
 .btn-edit:hover {
   background: rgba(255, 255, 255, 0.15);
-  border-color: #FFE81F;
-  color: #FFE81F;
+  border-color: #ffe81f;
+  color: #ffe81f;
 }
 
 .btn-delete {
@@ -544,7 +542,6 @@ header {
   box-shadow: 0 0 10px rgba(255, 56, 56, 0.4);
 }
 
-/* Stopka */
 footer {
   text-align: center;
   margin-top: 50px;
@@ -554,7 +551,6 @@ footer {
   font-size: 0.8rem;
 }
 
-/* Modal Overlay i Zawartość */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -568,7 +564,9 @@ footer {
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  transition: opacity 0.3s ease, display 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    display 0.3s ease;
   transition-behavior: allow-discrete;
 }
 
@@ -632,7 +630,7 @@ footer {
 }
 
 .btn-primary {
-  background: #FFE81F;
+  background: #ffe81f;
   color: #000;
   box-shadow: 0 4px 15px rgba(255, 232, 31, 0.2);
 }
@@ -642,7 +640,6 @@ footer {
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
 }
 
-/* Własne scrollbary (sci-fi HUD aesthetic) */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -658,13 +655,17 @@ footer {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #FFE81F;
+  background: #ffe81f;
   box-shadow: 0 0 10px rgba(255, 232, 31, 0.5);
 }
 
-/* Animacja dla reduced-motion */
 @media (prefers-reduced-motion: reduce) {
-  body, .twinkling, .character-card, .btn, .modal-overlay, .modal-content {
+  body,
+  .twinkling,
+  .character-card,
+  .btn,
+  .modal-overlay,
+  .modal-content {
     animation: none !important;
     transition: none !important;
     transform: none !important;

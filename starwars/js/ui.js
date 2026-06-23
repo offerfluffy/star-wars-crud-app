@@ -1,5 +1,5 @@
 import {
-  analizujFrakcjeIAwatar,
+  analyzeFactionAndAvatar,
   getFactionLabel,
   FACTION_OPTIONS,
 } from "./factions.js";
@@ -12,19 +12,17 @@ import {
   saveCharactersToDB,
 } from "./api.js";
 
-// Pokazuje komunikat statusu
-export function pokazStatus(tekst, typ = "info") {
+export function showStatus(text, type = "info") {
   const statusEl = document.getElementById("status-message");
-  statusEl.textContent = tekst;
+  statusEl.textContent = text;
   statusEl.style.display = "block";
-  statusEl.style.color = typ === "error" ? "#ff3838" : "#FFE81F";
+  statusEl.style.color = type === "error" ? "#ff3838" : "#FFE81F";
   setTimeout(() => {
     statusEl.style.display = "none";
   }, 4000);
 }
 
-// Pobiera i wyświetla listę postaci z bazy danych
-export function wyswietlDane() {
+export function displayData() {
   getCharacters()
     .then((data) => {
       const dane = document.getElementById("dane");
@@ -36,7 +34,7 @@ export function wyswietlDane() {
       }
 
       data.forEach((item) => {
-        const { faction, avatarHTML } = analizujFrakcjeIAwatar(
+        const { faction, avatarHTML } = analyzeFactionAndAvatar(
           item.name,
           item.gender,
           item.image_url,
@@ -73,13 +71,12 @@ export function wyswietlDane() {
           </div>
         `;
 
-        // Dodaj zdarzenia do przycisków w karcie
         card.querySelector(".btn-edit").addEventListener("click", () => {
-          otworzModal(item);
+          openModal(item);
         });
 
         card.querySelector(".btn-delete").addEventListener("click", () => {
-          usun(item.id);
+          removeCharacter(item.id);
         });
 
         dane.appendChild(card);
@@ -87,12 +84,11 @@ export function wyswietlDane() {
     })
     .catch((error) => {
       console.error("Błąd pobierania:", error);
-      pokazStatus("Błąd pobierania danych z bazy.", "error");
+      showStatus("Błąd pobierania danych z bazy.", "error");
     });
 }
 
-// Dodaje nową postać
-export function dodajPostac(event) {
+export function addCharacter(event) {
   event.preventDefault();
 
   const name = document.getElementById("name").value.trim();
@@ -101,7 +97,6 @@ export function dodajPostac(event) {
   const faction = document.getElementById("faction").value;
   const customUrl = document.getElementById("image_url").value.trim();
 
-  // Zapisz albo jawny URL albo prefiks frakcji
   const imageUrl = customUrl ? customUrl : `faction:${faction}`;
 
   if (!name || !height || !gender) {
@@ -113,39 +108,37 @@ export function dodajPostac(event) {
     .then((data) => {
       if (data.status === "success") {
         document.getElementById("formularz").reset();
-        pokazStatus("Dodano nową postać do rejestru.");
-        wyswietlDane();
+        showStatus("Dodano nową postać do rejestru.");
+        displayData();
       } else {
         alert("Błąd: " + (data.message || "Nie udało się zapisać postaci."));
       }
     })
     .catch((error) => {
       console.error("Błąd zapisu:", error);
-      pokazStatus("Błąd połączenia podczas zapisu.", "error");
+      showStatus("Błąd połączenia podczas zapisu.", "error");
     });
 }
 
-// Pobiera listę postaci ze SWAPI
-export function pobierzZApi(event) {
+export function fetchFromApi(event) {
   event.preventDefault();
-  pokazStatus("Łączenie z archiwum SWAPI...");
+  showStatus("Łączenie z archiwum SWAPI...");
 
   fetchFromSWAPI()
     .then((characters) => {
       return saveCharactersToDB(characters);
     })
     .then(() => {
-      pokazStatus("Pomyślnie zsynchronizowano dane z API SWAPI.");
-      wyswietlDane();
+      showStatus("Pomyślnie zsynchronizowano dane z API SWAPI.");
+      displayData();
     })
     .catch((error) => {
       console.error("Błąd synchronizacji ze SWAPI:", error);
-      pokazStatus("Nie udało się pobrać danych ze SWAPI.", "error");
+      showStatus("Nie udało się pobrać danych ze SWAPI.", "error");
     });
 }
 
-// Otwiera modal edycji i uzupełnia formularz
-export function otworzModal(character) {
+export function openModal(character) {
   const modal = document.getElementById("edit-modal");
 
   document.getElementById("edit-id").value = character.id;
@@ -160,16 +153,14 @@ export function otworzModal(character) {
     document.getElementById("edit-image-url").value = "";
   } else if (currentImg.startsWith("http")) {
     document.getElementById("edit-image-url").value = currentImg;
-    // Wykryj frakcję na potrzeby formularza
-    const { faction } = analizujFrakcjeIAwatar(
+    const { faction } = analyzeFactionAndAvatar(
       character.name,
       character.gender,
       currentImg,
     );
     document.getElementById("edit-faction").value = faction;
   } else {
-    // Wykryj domyślną frakcję i wyczyść URL
-    const { faction } = analizujFrakcjeIAwatar(
+    const { faction } = analyzeFactionAndAvatar(
       character.name,
       character.gender,
       currentImg,
@@ -181,14 +172,12 @@ export function otworzModal(character) {
   modal.classList.remove("hidden");
 }
 
-// Zamyka modal edycji
-export function zamknijModal() {
+export function closeModal() {
   const modal = document.getElementById("edit-modal");
   modal.classList.add("hidden");
 }
 
-// Zapisuje edytowaną postać
-export function zapiszEdycje(event) {
+export function saveEdit(event) {
   event.preventDefault();
 
   const id = document.getElementById("edit-id").value;
@@ -203,51 +192,47 @@ export function zapiszEdycje(event) {
   updateCharacter(id, name, height, gender, imageUrl)
     .then((data) => {
       if (data.status === "success") {
-        zamknijModal();
-        pokazStatus("Pomyślnie zaktualizowano dane postaci.");
-        wyswietlDane();
+        closeModal();
+        showStatus("Pomyślnie zaktualizowano dane postaci.");
+        displayData();
       } else {
         alert("Błąd: " + (data.message || "Nie udało się zapisać zmian."));
       }
     })
     .catch((error) => {
       console.error("Błąd edycji:", error);
-      pokazStatus("Błąd połączenia podczas aktualizacji.", "error");
+      showStatus("Błąd połączenia podczas aktualizacji.", "error");
     });
 }
 
-// Usuwa postać z animacją wyjścia
-export function usun(id) {
+export function removeCharacter(id) {
   if (confirm("Czy na pewno chcesz usunąć tę postać z archiwum Holonetu?")) {
     const card = document.getElementById(`card-${id}`);
 
-    // Uruchomienie animacji wyjścia
     if (card) {
       card.classList.add("hidden");
     }
 
-    // Opóźnienie wysłania żądania o czas animacji (400ms)
     setTimeout(() => {
       deleteCharacter(id)
         .then((data) => {
           if (data.status === "success") {
-            pokazStatus("Usunięto postać z rejestru.");
-            wyswietlDane();
+            showStatus("Usunięto postać z rejestru.");
+            displayData();
           } else {
             alert("Błąd: " + (data.message || "Nie udało się usunąć postaci."));
-            wyswietlDane(); // Przywróć widok w przypadku błędu
+            displayData();
           }
         })
         .catch((error) => {
           console.error("Błąd usuwania:", error);
-          pokazStatus("Błąd połączenia podczas usuwania.", "error");
-          wyswietlDane();
+          showStatus("Błąd połączenia podczas usuwania.", "error");
+          displayData();
         });
     }, 400);
   }
 }
 
-// Inicjalizuje listy rozwijane frakcji na podstawie enuma
 export function initFactionDropdowns() {
   const factionSelects = [
     document.getElementById("faction"),

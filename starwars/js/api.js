@@ -1,6 +1,5 @@
-import { wykryjFrakcjePoNazwie } from "./factions.js";
+import { detectFactionByName } from "./factions.js";
 
-// Fetches all characters from the database
 export async function getCharacters() {
   const response = await fetch("php/read.php");
   if (!response.ok) {
@@ -9,7 +8,6 @@ export async function getCharacters() {
   return response.json();
 }
 
-// Creates a new character in the database
 export async function createCharacter(name, height, gender, imageUrl) {
   const response = await fetch("php/create.php", {
     method: "POST",
@@ -24,7 +22,6 @@ export async function createCharacter(name, height, gender, imageUrl) {
   return response.json();
 }
 
-// Updates an existing character in the database
 export async function updateCharacter(id, name, height, gender, imageUrl) {
   const response = await fetch("php/update.php", {
     method: "POST",
@@ -39,7 +36,6 @@ export async function updateCharacter(id, name, height, gender, imageUrl) {
   return response.json();
 }
 
-// Deletes a character from the database
 export async function deleteCharacter(id) {
   const response = await fetch(`php/delete.php?id=${id}`, {
     method: "DELETE",
@@ -50,7 +46,6 @@ export async function deleteCharacter(id) {
   return response.json();
 }
 
-// Fetches list of characters from the SWAPI API
 export async function fetchFromSWAPI() {
   const response = await fetch("https://swapi.py4e.com/api/people/");
   if (!response.ok) {
@@ -59,8 +54,7 @@ export async function fetchFromSWAPI() {
   const data = await response.json();
 
   return data.results.map((c) => {
-    // Auto-przypisanie frakcji do image_url dla pobranych postaci
-    const detectedFaction = wykryjFrakcjePoNazwie(c.name) || "empire";
+    const detectedFaction = detectFactionByName(c.name) || "empire";
 
     return {
       name: c.name,
@@ -71,7 +65,6 @@ export async function fetchFromSWAPI() {
   });
 }
 
-// Saves multiple characters to the database in parallel
 export async function saveCharactersToDB(characters) {
   const promises = characters.map((c) => {
     return createCharacter(c.name, c.height, c.gender, c.image_url);

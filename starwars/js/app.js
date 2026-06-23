@@ -1,33 +1,28 @@
 import { prefetchSVGs } from "./factions.js";
 import {
-  wyswietlDane,
-  dodajPostac,
-  pobierzZApi,
-  zamknijModal,
-  zapiszEdycje,
+  displayData,
+  addCharacter,
+  fetchFromApi,
+  closeModal,
+  saveEdit,
   initFactionDropdowns,
 } from "./ui.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // Populate faction dropdowns dynamically matching the factions enum
   initFactionDropdowns();
 
-  // Prefetch SVGs
   await prefetchSVGs();
 
-  // Render character data
-  wyswietlDane();
+  displayData();
 
-  // Bind main page actions
-  document.getElementById("formularz").addEventListener("submit", dodajPostac);
-  document.getElementById("api-btn").addEventListener("click", pobierzZApi);
+  document.getElementById("formularz").addEventListener("submit", addCharacter);
+  document.getElementById("api-btn").addEventListener("click", fetchFromApi);
 
-  // Bind edit modal actions
   document
     .getElementById("close-modal-btn")
-    .addEventListener("click", zamknijModal);
+    .addEventListener("click", closeModal);
   document
     .getElementById("close-modal-x")
-    .addEventListener("click", zamknijModal);
-  document.getElementById("edit-form").addEventListener("submit", zapiszEdycje);
+    .addEventListener("click", closeModal);
+  document.getElementById("edit-form").addEventListener("submit", saveEdit);
 });
